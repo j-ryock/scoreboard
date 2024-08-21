@@ -1,0 +1,244 @@
+<!-- THIS IS A THIRD COMMENT-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scoreboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .form-container,
+    .scoreboard-container {
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 80%;
+      min-width: 40%;
+      max-height: 80%;
+      min-height: 40%;
+      /* width: 100%; */
+      /* height: 100%; */
+    }
+
+    /* .form-container,
+    .scoreboard-container {
+      display: flex;
+      flex-direction: column;
+    } */
+
+    .form-container input,
+    .form-container button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 1em;
+    }
+
+    .scoreboard-container {
+      display: none;
+    }
+
+    .team {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      position: relative;
+    }
+
+    .team::before { /* vertical <hr> */
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -30%;
+      bottom: 0;
+      width: 1px;
+      height: 160%;
+      background-color: #000;
+      transform: translateX(-50%);
+    }
+
+    .team-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      margin-top: -10px;
+    }
+
+    .team-name {
+      font-size: 1.2em;
+      margin-top: 5px;
+    }
+
+    .score {
+      font-size: 5em;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .buttons button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      color: #fff;
+      width: 140px;
+      height: 40px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .buttonPlus {
+      background-color: green;
+      font-size: 3em;
+      font-weight: bold;
+    }
+
+    .buttonMinus {
+      background-color: red;
+      font-size: 6em;
+      padding-bottom: 16px;
+    }
+
+/* ----------------------------------NEW Responsive adjustments---------------------------------- */
+        /* For small screens, like phones */
+@media only screen and (max-width: 600px) {
+    .form-container,  
+    .scoreboard-container {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* For medium screens, like tablets */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .form-container,  
+  .scoreboard-container {
+        padding: 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* For larger screens, like desktops */
+@media only screen and (min-width: 1025px) {
+  .form-container,
+  .scoreboard-container {
+        padding: 3rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* ----------------------------------ORIGINAL Responsive adjustments---------------------------------- */
+    /* @media (max-width: 600px) {
+      .scoreboard-container {
+        max-width: 90%;
+      }
+
+      .team-name {
+        font-size: 1em;
+      }
+
+      .score {
+        font-size: 5em;
+      }
+
+      .buttons button {
+        font-size: 0.9em;
+        padding: 8px;
+      }
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <input type="text" id="team1Input" autocomplete="off" placeholder="Team One Name">
+    <input type="text" id="team2Input"  autocomplete="off" placeholder="Team Two Name">
+    <button onclick="showScoreboard()">Submit</button>
+  </div>
+
+  <div class="scoreboard-container">
+    <div class="buttons">
+      <button class="buttonPlus" onclick="incrementScore('team1Score')">+</button>
+      <button class="buttonPlus" onclick="incrementScore('team2Score')">+</button>
+    </div>
+
+    <div class="team">
+      <div class="team-column">
+        <span class="team-name" id="team1Name">Team One</span>
+        <span class="score" id="team1Score">0</span>
+      </div>
+
+       <!-- vertical <hr>'s class = .team::before psudo class -->
+
+      <div class="team-column">
+        <span class="team-name" id="team2Name">Team Two</span>
+        <span class="score" id="team2Score">0</span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="buttonMinus" onclick="decrementScore('team1Score')">-</button>
+      <button class="buttonMinus" onclick="decrementScore('team2Score')">-</button>
+    </div>
+  </div>
+
+  <script>
+    function showScoreboard() {
+      const team1Name = document.getElementById('team1Input').value;
+      const team2Name = document.getElementById('team2Input').value;
+
+      document.getElementById('team1Name').textContent = team1Name;
+      document.getElementById('team2Name').textContent = team2Name;
+
+      document.querySelector('.form-container').style.display = 'none';
+      document.querySelector('.scoreboard-container').style.display = 'flex';
+    }
+
+    function incrementScore(team) {
+      const scoreElement = document.getElementById(team);
+      let currentScore = parseInt(scoreElement.textContent);
+      scoreElement.textContent = currentScore + 1;
+      updateScoreColor(scoreElement);
+    }
+
+    function decrementScore(team) {
+      const scoreElement = document.getElementById(team);
+      let currentScore = parseInt(scoreElement.textContent);
+      scoreElement.textContent = currentScore - 1;
+      updateScoreColor(scoreElement);
+    }
+
+    function updateScoreColor(scoreElement) {
+      const score = parseInt(scoreElement.textContent);
+
+      if (score < 0) {
+        scoreElement.style.color = 'red';
+      } else if (score >= 21) {
+        scoreElement.style.color = 'green';
+      } else {
+        scoreElement.style.color = 'black'; // Default color
+      }
+    }
+  </script>
+</body>
+
+</html>
